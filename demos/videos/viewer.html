@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResQMind — Demo Videos</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0B1120;
+      color: #E8EDF5;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    h1 span:first-child { color: white; }
+    h1 span:last-child { color: #0A84FF; }
+    .subtitle { text-align: center; color: #6B7A99; font-size: 0.9rem; margin-bottom: 40px; }
+    .demos { display: grid; grid-template-columns: repeat(auto-fit, minmax(600px, 1fr)); gap: 24px; max-width: 1400px; margin: 0 auto; }
+    .demo-card {
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .demo-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .demo-title { font-weight: 600; font-size: 0.95rem; }
+    .demo-frame-info { font-size: 0.75rem; color: #6B7A99; }
+    .demo-viewer {
+      position: relative;
+      background: #000;
+      aspect-ratio: 16/9;
+    }
+    .demo-viewer img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .demo-controls {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .demo-controls button {
+      padding: 6px 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(59,130,246,0.3);
+      background: rgba(10,132,255,0.1);
+      color: #0A84FF;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .demo-controls button:hover { background: rgba(10,132,255,0.2); }
+    .demo-controls button.active { background: #0A84FF; color: white; }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0A84FF, #FF6B2C);
+      border-radius: 2px;
+      transition: width 0.1s;
+    }
+    .speed-control { font-size: 0.75rem; color: #6B7A99; }
+    .footer { text-align: center; margin-top: 40px; color: #6B7A99; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <h1><span>ResQ</span><span>Mind</span></h1>
+  <p class="subtitle">Demo Video Viewer — Frame-by-Frame Playback</p>
+  <div class="demos" id="demos"></div>
+  <p class="footer">Made with ❤ by Grey Coder | Powered by Qdrant Edge + Local LLM</p>
+
+  <script>
+    const demos = [{"name":"01_dashboard_overview","frameCount":13,"title":"01 dashboard overview"},{"name":"02_ai_chat","frameCount":32,"title":"02 ai chat"},{"name":"03_connectivity_toggle","frameCount":14,"title":"03 connectivity toggle"},{"name":"04_add_victim","frameCount":10,"title":"04 add victim"}];
+
+    const container = document.getElementById("demos");
+    demos.forEach((demo, idx) => {
+      const card = document.createElement("div");
+      card.className = "demo-card";
+      card.innerHTML = `
+        <div class="demo-header">
+          <span class="demo-title">${demo.title}</span>
+          <span class="demo-frame-info">${demo.frameCount} frames</span>
+        </div>
+        <div class="demo-viewer">
+          <img id="img-${idx}" src="${demo.name}/frame_0001.png" alt="${demo.title}" />
+        </div>
+        <div class="demo-controls">
+          <button id="play-${idx}" onclick="togglePlay(${idx})">▶ Play</button>
+          <div class="progress-bar"><div class="progress-fill" id="progress-${idx}" style="width:0%"></div></div>
+          <span class="speed-control" id="speed-${idx}">1x</span>
+          <button onclick="changeSpeed(${idx}, -1)">−</button>
+          <button onclick="changeSpeed(${idx}, 1)">+</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    const states = demos.map(() => ({ playing: false, frame: 1, speed: 150, interval: null }));
+    const speeds = [300, 200, 150, 100, 50];
+    const speedLabels = ['0.5x', '0.75x', '1x', '1.5x', '2x'];
+
+    function togglePlay(idx) {
+      const state = states[idx];
+      const btn = document.getElementById('play-' + idx);
+      if (state.playing) {
+        clearInterval(state.interval);
+        state.playing = false;
+        btn.textContent = '▶ Play';
+        btn.classList.remove('active');
+      } else {
+        state.playing = true;
+        btn.textContent = '⏸ Pause';
+        btn.classList.add('active');
+        state.interval = setInterval(() => {
+          state.frame++;
+          if (state.frame > demos[idx].frameCount) state.frame = 1;
+          const img = document.getElementById('img-' + idx);
+          const progress = document.getElementById('progress-' + idx);
+          img.src = demos[idx].name + '/frame_' + String(state.frame).padStart(4, '0') + '.png';
+          progress.style.width = ((state.frame / demos[idx].frameCount) * 100) + '%';
+        }, state.speed);
+      }
+    }
+
+    function changeSpeed(idx, dir) {
+      const state = states[idx];
+      const currentIdx = speeds.indexOf(state.speed);
+      const newIdx = Math.max(0, Math.min(speeds.length - 1, currentIdx + dir));
+      state.speed = speeds[newIdx];
+      document.getElementById('speed-' + idx).textContent = speedLabels[newIdx];
+      if (state.playing) {
+        clearInterval(state.interval);
+        state.interval = setInterval(() => {
+          state.frame++;
+          if (state.frame > demos[idx].frameCount) state.frame = 1;
+          document.getElementById('img-' + idx).src = demos[idx].name + '/frame_' + String(state.frame).padStart(4, '0') + '.png';
+          document.getElementById('progress-' + idx).style.width = ((state.frame / demos[idx].frameCount) * 100) + '%';
+        }, state.speed);
+      }
+    }
+  </script>
+</body>
+</html>
