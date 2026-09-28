@@ -1,3 +1,5 @@
+
+
 # 🛡️ ResQMind — Offline AI Disaster Intelligence Platform
 
 > **Made by Grey Coder** | Powered by Qdrant Edge + Local LLM
@@ -76,33 +78,15 @@ Seven glowing metric cards: Victims, Active Rescues, Shelters, Available Beds, B
 
 
 ## 🎥 Project Demo
+DASHBOARD
+<img width="1376" height="768" alt="01_dashboard_overview" src="https://github.com/user-attachments/assets/5971c99d-1b10-4c05-b8cb-5fd0a76ad939" />
 
-[▶️ Watch ResQMind Demo](./demos/videos/viewer.html)
+AI ASSISTANT
+<img width="1376" height="768" alt="02_ai_rescue_assistant" src="https://github.com/user-attachments/assets/19053f10-c091-4c5e-be59-d010f97310b0" />
 
-## 🎥 Demo Videos & Screenshots
-### Screenshots (Pre-generated)
-| File | Description |
-|------|------------|
-| `00_resqmind_logo.jpg` | ResQMind shield logo |
-| `01_dashboard_overview.jpg` | Full dashboard layout |
-| `02_ai_rescue_assistant.jpg` | AI chat with query response |
-| `03_interactive_offline_map.jpg` | Map with markers and routes |
-| `04_sync_center.jpg` | Edge-to-Cloud sync flow |
-| `05_victim_records.jpg` | Victim records with status |
-| `06_knowledge_base.jpg` | Document library |
-| `07_workflow_diagram.jpg` | Field rescue workflow |
+INTERACTIVE OFFLINE MAP
+<img width="1376" height="768" alt="03_interactive_offline_map" src="https://github.com/user-attachments/assets/14d0fdbc-a796-4b17-b045-d30b0e65b43f" />
 
-### Record Your Own Videos
-```bash
-# Make sure dev server is running first:
-npm run dev
-
-# Capture screenshots of all features:
-node demos/capture-demos.mjs
-
-# Record full WebM demo videos:
-node demos/record-videos.mjs
-```
 
 **Video demos recorded** (in `demos/videos/`):
 1. `01_dashboard_walkthrough.webm` — Full page scroll tour
@@ -168,6 +152,9 @@ demos/
 ---
 
 ## 📝 Example Workflow
+
+<img width="1376" height="768" alt="07_workflow_diagram" src="https://github.com/user-attachments/assets/b7f01288-7a1b-4f54-bcbb-e1a7b03ac87a" />
+
 
 A rescue officer is deployed in a flood-hit village with **no internet**. They ask:
 
