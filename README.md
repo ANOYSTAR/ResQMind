@@ -74,10 +74,12 @@ Seven glowing metric cards: Victims, Active Rescues, Shelters, Available Beds, B
 
 ---
 
+
+## 🎥 Project Demo
+
+[▶️ Watch ResQMind Demo](./demos/videos/viewer.html)
+
 ## 🎥 Demo Videos & Screenshots
-
-Demo materials are in the [`demos/`](./demos/) folder:
-
 ### Screenshots (Pre-generated)
 | File | Description |
 |------|------------|
